@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Caminos del grafo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <main class="pagina">
+
+        <header class="encabezado">
+            <p class="sobretitulo">Grafo no dirigido · lista de adyacencia</p>
+            <h1>Caminos del grafo</h1>
+            <p class="intro">
+                Elige un vértice de inicio y uno final. Se buscan todos
+                los caminos simples con DFS y vuelta atrás, igual que en
+                el programa en C, y cada camino se pinta de un color.
+            </p>
+        </header>
+
+        <form class="controles" id="controles">
+            <div class="campo">
+                <label for="inicio">Inicio</label>
+                <select id="inicio"></select>
+            </div>
+            <div class="campo">
+                <label for="fin">Final</label>
+                <select id="fin"></select>
+            </div>
+            <button type="submit" id="pintar">Pintar caminos</button>
+            <p class="nota" id="nota-grafo"></p>
+        </form>
+
+        <section class="lienzo" aria-label="Dibujo del grafo">
+            <svg id="dibujo" role="img"
+                 aria-label="Grafo con los caminos pintados"></svg>
+        </section>
+
+        <section class="resumen" aria-live="polite">
+            <div class="dato">
+                <span class="etiqueta">Caminos</span>
+                <span class="valor" id="total">0</span>
+            </div>
+            <div class="dato">
+                <span class="etiqueta">Más corto</span>
+                <span class="valor" id="minimo">—</span>
+            </div>
+            <div class="dato">
+                <span class="etiqueta">Más largo</span>
+                <span class="valor" id="maximo">—</span>
+            </div>
+            <p class="ayuda" id="ayuda"></p>
+        </section>
+
+        <section class="tabla-caja">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Color</th>
+                        <th>Recorrido</th>
+                        <th>Aristas</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpo-tabla"></tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <script src="grafo.js"></script>
+</body>
+</html>

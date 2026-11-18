@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Métodos de Ordenamiento simultáneos</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+        <header>
+                <div class="titulo">
+                        <span class="prompt">$</span> ./ordenar
+                        <span class="cursor">_</span>
+                </div>
+                <p class="subtitulo">
+                        Seis métodos de ordenamiento corriendo <b>al mismo tiempo</b>
+                        sobre la misma colección de números.
+                </p>
+        </header>
+
+        <section class="controles">
+                <label>
+                        Cantidad de datos
+                        <input type="range" id="cantidad" min="10" max="200" value="60">
+                        <span id="cantidadTexto">60</span>
+                </label>
+
+                <label>
+                        Velocidad
+                        <input type="range" id="velocidad" min="1" max="100" value="5">
+                        <span id="velocidadTexto">5</span>
+                </label>
+
+                <label>
+                        Datos
+                        <select id="tipoDatos">
+                                <option value="aleatorio">Aleatorios</option>
+                                <option value="casi">Casi ordenados</option>
+                                <option value="inverso">Al revés</option>
+                        </select>
+                </label>
+
+                <div class="botones">
+                        <button id="btnGenerar" class="secundario">Generar datos</button>
+                        <button id="btnOrdenar">▶ Ordenar</button>
+                </div>
+        </section>
+
+        <main id="tablero"></main>
+
+        <section class="resultados">
+                <h2>Resultados</h2>
+                <table>
+                        <thead>
+                                <tr>
+                                        <th>Lugar</th>
+                                        <th>Método</th>
+                                        <th>Complejidad</th>
+                                        <th>Comparaciones</th>
+                                        <th>Movimientos</th>
+                                        <th>Operaciones</th>
+                                </tr>
+                        </thead>
+                        <tbody id="tablaResultados">
+                                <tr><td colspan="6" class="vacio">Presiona “Ordenar” para iniciar la carrera.</td></tr>
+                        </tbody>
+                </table>
+
+                <div class="leyenda">
+                        <span><i class="c-normal"></i> Dato</span>
+                        <span><i class="c-compara"></i> Comparando</span>
+                        <span><i class="c-mueve"></i> Moviendo</span>
+                        <span><i class="c-listo"></i> Ordenado</span>
+                </div>
+
+                <p class="nota">
+                        Todos los métodos avanzan al mismo ritmo de operaciones por cuadro,
+                        así que el que termina primero es el que necesitó <b>menos operaciones</b>.
+                        Los tiempos reales en segundos los mide el programa en C.
+                </p>
+        </section>
+
+        <script src="app.js"></script>
+</body>
+</html>

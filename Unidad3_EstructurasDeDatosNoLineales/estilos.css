@@ -1,0 +1,425 @@
+/* Cuaderno de ingeniería: tinta azul sobre papel cuadriculado,
+   una sola columna centrada (controles, dibujo, resumen, tabla) */
+:root {
+    --fondo: #e9eef1;
+    --papel: #fafcfd;
+    --cuadricula: #dfe7ec;
+    --tinta: #15212b;
+    --tinta-suave: #586a77;
+    --linea: #b4c1ca;
+    --acento: #1d5bb8;
+    --sobre-acento: #ffffff;
+    --corto: #a64b06;
+    --corto-fondo: #fcefdc;
+
+    /* Saturación y luz de los colores de cada camino */
+    --sat: 78%;
+    --lum: 43%;
+
+    --f-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --f-texto: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+    --f-datos: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --fondo: #0e1418;
+        --papel: #141c22;
+        --cuadricula: #1d2830;
+        --tinta: #e3ebf0;
+        --tinta-suave: #8d9fab;
+        --linea: #3a4955;
+        --acento: #6ea4ff;
+        --sobre-acento: #0b1626;
+        --corto: #f3b562;
+        --corto-fondo: #3a2911;
+        --sat: 82%;
+        --lum: 63%;
+        color-scheme: dark;
+    }
+}
+
+:root[data-theme="dark"] {
+    --fondo: #0e1418;
+    --papel: #141c22;
+    --cuadricula: #1d2830;
+    --tinta: #e3ebf0;
+    --tinta-suave: #8d9fab;
+    --linea: #3a4955;
+    --acento: #6ea4ff;
+    --sobre-acento: #0b1626;
+    --corto: #f3b562;
+    --corto-fondo: #3a2911;
+    --sat: 82%;
+    --lum: 63%;
+    color-scheme: dark;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--tinta);
+    font-family: var(--f-texto);
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+/* ---------- Estructura ---------- */
+
+.pagina {
+    max-width: 980px;
+    margin: 0 auto;
+    padding-block: 36px 56px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: grid;
+    gap: 20px;
+}
+
+.encabezado {
+    display: grid;
+    gap: 6px;
+}
+
+.sobretitulo {
+    margin: 0;
+    font-family: var(--f-datos);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--acento);
+}
+
+h1 {
+    margin: 0;
+    font-family: var(--f-titulo);
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+}
+
+.intro {
+    margin: 4px 0 0;
+    max-width: 62ch;
+    color: var(--tinta-suave);
+}
+
+/* ---------- Controles ---------- */
+
+.controles {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px 16px;
+    padding: 14px 16px;
+    background: var(--papel);
+    border: 1px solid var(--linea);
+    border-radius: 10px;
+}
+
+.campo {
+    display: grid;
+    gap: 4px;
+}
+
+.campo label,
+.dato .etiqueta,
+th {
+    font-family: var(--f-datos);
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--tinta-suave);
+}
+
+select {
+    min-width: 92px;
+    padding: 8px 12px;
+    font-family: var(--f-datos);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--tinta);
+    background: var(--fondo);
+    border: 1px solid var(--linea);
+    border-radius: 8px;
+}
+
+button {
+    padding: 10px 18px;
+    font-family: var(--f-texto);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--sobre-acento);
+    background: var(--acento);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.08);
+}
+
+select:focus-visible,
+button:focus-visible,
+tbody tr:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 2px;
+}
+
+.nota {
+    margin: 0 0 0 auto;
+    font-family: var(--f-datos);
+    font-size: 12px;
+    color: var(--tinta-suave);
+}
+
+/* ---------- Dibujo del grafo ---------- */
+
+.lienzo {
+    background-color: var(--papel);
+    background-image:
+        linear-gradient(var(--cuadricula) 1px, transparent 1px),
+        linear-gradient(90deg, var(--cuadricula) 1px, transparent 1px);
+    background-size: 24px 24px;
+    border: 1px solid var(--linea);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#dibujo {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.arista-base {
+    stroke: var(--linea);
+    stroke-width: 2;
+}
+
+.camino {
+    fill: none;
+    stroke: hsl(var(--h) var(--sat) var(--lum));
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    transition: opacity 0.2s, stroke-width 0.2s;
+}
+
+/* Efecto de "ir pintando" el camino */
+.camino.dibujando {
+    animation: trazo 0.7s ease-out both;
+}
+
+@keyframes trazo {
+    from {
+        stroke-dashoffset: 1;
+    }
+}
+
+/* Cuando se elige un camino, los demás se apagan */
+.con-enfoque .camino {
+    opacity: 0.08;
+}
+
+.con-enfoque .camino.activo {
+    opacity: 1;
+    stroke-width: 5;
+}
+
+.vertice circle {
+    fill: var(--papel);
+    stroke: var(--tinta);
+    stroke-width: 2;
+}
+
+.vertice .numero {
+    fill: var(--tinta);
+    font-family: var(--f-datos);
+    font-size: 15px;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+.vertice .rol {
+    fill: var(--acento);
+    font-family: var(--f-datos);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-anchor: middle;
+    /* contorno del color del papel para leerse sobre las líneas */
+    paint-order: stroke;
+    stroke: var(--papel);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+}
+
+.vertice.inicio circle {
+    fill: var(--acento);
+    stroke: var(--acento);
+}
+
+.vertice.inicio .numero {
+    fill: var(--sobre-acento);
+}
+
+.vertice.fin circle {
+    stroke: var(--acento);
+    stroke-width: 4;
+}
+
+/* ---------- Resumen ---------- */
+
+.resumen {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px 32px;
+}
+
+.dato {
+    display: grid;
+}
+
+.dato .valor {
+    font-family: var(--f-datos);
+    font-size: 24px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.dato .valor small {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--tinta-suave);
+}
+
+.ayuda {
+    margin: 0 0 0 auto;
+    font-size: 13px;
+    color: var(--tinta-suave);
+}
+
+/* ---------- Tabla de recorridos ---------- */
+
+.tabla-caja {
+    overflow-x: auto;
+    background: var(--papel);
+    border: 1px solid var(--linea);
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--linea);
+}
+
+td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--cuadricula);
+    vertical-align: middle;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr {
+    cursor: pointer;
+}
+
+tbody tr:hover,
+tbody tr.activo {
+    background: var(--fondo);
+}
+
+tbody tr.activo td:first-child {
+    box-shadow: inset 4px 0 0 hsl(var(--h) var(--sat) var(--lum));
+}
+
+.num {
+    font-family: var(--f-datos);
+    font-variant-numeric: tabular-nums;
+}
+
+.muestra {
+    display: inline-block;
+    width: 28px;
+    height: 6px;
+    border-radius: 3px;
+    background: hsl(var(--h) var(--sat) var(--lum));
+}
+
+.recorrido {
+    font-family: var(--f-datos);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.flecha {
+    color: var(--tinta-suave);
+    font-weight: 400;
+}
+
+.insignia {
+    display: inline-block;
+    padding: 3px 9px;
+    font-family: var(--f-datos);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    color: var(--corto);
+    background: var(--corto-fondo);
+    border-radius: 999px;
+}
+
+.vacio td {
+    padding: 28px 14px;
+    text-align: center;
+    color: var(--tinta-suave);
+    cursor: default;
+}
+
+.fila-nueva {
+    animation: aparecer 0.3s ease-out both;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .camino.dibujando,
+    .fila-nueva {
+        animation: none;
+    }
+}
+
+@media (max-width: 560px) {
+    .nota,
+    .ayuda {
+        margin-left: 0;
+        width: 100%;
+    }
+}
